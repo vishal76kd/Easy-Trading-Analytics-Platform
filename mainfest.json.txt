@@ -1,0 +1,15 @@
+{
+  "short_name": "EasyTrading",
+  "name": "Easy Trading Analytics Platform",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2422/2422776.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/Easy-Trading-Analytics-Platform/",
+  "background_color": "#ffffff",
+  "display": "standalone",
+  "theme_color": "#000000"
+}
