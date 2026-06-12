@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EASY TRADING ANALYTICS PLATFORM</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <h3 class="app-title">Easy Trading</h3>
+    
+    <div class="carousel-container">
+        <button class="arrow-btn left-arrow" onclick="moveSlide(-1)">&#10094;</button>
+        <button class="arrow-btn right-arrow" onclick="moveSlide(1)">&#10095;</button>
+
+        <div class="carousel-track" id="track">
+            
+            <div class="slide-item">
+                <div class="box calc-box">
+                    <h3>🧮 QUICK CALCULATOR</h3>
+                    <input type="text" id="calcDisplay" readonly value="0">
+                    <div class="calc-btn-grid">
+                        <button class="btn-gray" onclick="pressKey('C')">C</button>
+                        <button class="btn-gray" onclick="pressKey('/')">/</button>
+                        <button class="btn-gray" onclick="pressKey('*')">*</button>
+                        <button class="btn-gray" onclick="pressKey('-')">-</button>
+                        
+                        <button onclick="pressKey('7')">7</button>
+                        <button onclick="pressKey('8')">8</button>
+                        <button onclick="pressKey('9')">9</button>
+                        <button class="btn-orange" onclick="pressKey('+')">+</button>
+                        
+                        <button onclick="pressKey('4')">4</button>
+                        <button onclick="pressKey('5')">5</button>
+                        <button onclick="pressKey('6')">6</button>
+                        <button class="btn-gray" onclick="pressKey('%')">%</button>
+                        
+                        <button onclick="pressKey('1')">1</button>
+                        <button onclick="pressKey('2')">2</button>
+                        <button onclick="pressKey('3')">3</button>
+                        <button class="btn-orange" onclick="pressKey('=')">=</button>
+                        
+                        <button onclick="pressKey('0')">0</button>
+                        <button onclick="pressKey('.')">.</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slide-item">
+                <div class="box">
+                    <h3>📊 BROKERAGE & PNL</h3>
+                    <select id="broker" onchange="calcPnL()">
+                        <option value="dhan">Dhan</option>
+                        <option value="angel">Angel One</option>
+                    </select>
+                    
+                    <select id="seg" onchange="toggleView()">
+                        <option value="intraday">Equity Intraday</option>
+                        <option value="delivery">Equity Delivery</option>
+                        <option value="options">Options (F&O)</option>
+                    </select>
+
+                    <div id="foIndexWrapper" style="display: none;">
+                        <select id="foIndex" onchange="calcPnL()">
+                            <option value="nifty">Nifty (1 Lot = 65)</option>
+                            <option value="banknifty">Nifty Bank (1 Lot = 30)</option>
+                        </select>
+                    </div>
+
+                    <input type="number" id="buy" placeholder="Buy Price" oninput="calcPnL()">
+                    <input type="number" id="sell" placeholder="Sell Price" oninput="calcPnL()">
+                    <input type="number" id="qtyPnL" placeholder="Quantity / Lots" oninput="calcPnL()">
+                    
+                    <div class="info">
+                        <p id="actualQtyShow" style="display:none;">Total Qty: <span id="showQ">0</span></p>
+                        <p>Gross PnL: <span id="gross">₹0.00</span></p>
+                        <p>Total Tax: <span id="tax">₹0.00</span></p>
+                    </div>
+                    <h1 id="res">₹0.00</h1>
+                    <button class="clear-btn" onclick="clearPnL()">Clear</button>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="box">
+                    <h3>🎯 PRO MARGIN CALC</h3>
+                    <input type="number" id="cap" placeholder="Enter Risk Capital" oninput="calcMargin()">
+                    <input type="number" id="numTrades" placeholder="No. of Trades (1-3)" min="1" max="3" oninput="calcMargin()">
+                    
+                    <select id="lev" onchange="calcMargin()">
+                        <option value="1">1x Leverage</option>
+                        <option value="2">2x Leverage</option>
+                        <option value="3">3x Leverage</option>
+                        <option value="4">4x Leverage</option>
+                        <option value="5">5x Leverage</option>
+                    </select>
+                    
+                    <input type="number" id="price" placeholder="Stock Price" oninput="calcMargin()">
+                    
+                    <select id="rr" onchange="calcMargin()">
+                        <option value="1">R:R - 1:1</option>
+                        <option value="2" selected>R:R - 1:2</option>
+                        <option value="3">R:R - 1:3</option>
+                    </select>
+
+                    <div class="res-box">
+                        <p>Buying Power: <span id="power" class="blue">₹0.00</span></p>
+                        <p>Qty (Per Trade): <span id="qtyMargin" class="blue">0</span></p>
+                        <p>Max Loss (Per Trade): <span id="loss" class="red">₹0.00</span></p>
+                        <hr style="border:0; border-top: 1px solid #334155; margin:8px 0;">
+                        <p>Stop Loss (SL): <span id="sl" class="orange">₹0.00</span></p>
+                        <p>Target Price: <span id="target" class="green">₹0.00</span></p>
+                    </div>
+                    <button class="clear-btn" onclick="clearMargin()">Clear</button>
+                </div>
+            </div>
+
+            <div class="slide-item">
+                <div class="box opt-box">
+                    <h3>⚡ LIVE OPTION DELTA CALC</h3>
+                    <div class="columns-container">
+                        <div class="card call">
+                            <h4>CALL (CE)</h4>
+                            <input type="number" id="cPrice" placeholder="Premium" oninput="calcOptions()">
+                            <input type="number" id="cDelta" placeholder="Delta" oninput="calcOptions()">
+                            <input type="number" id="cMove" placeholder="Move" oninput="calcOptions()">
+                            <h1 id="cRes">₹0.00</h1>
+                        </div>
+                        <div class="card put">
+                            <h4>PUT (PE)</h4>
+                            <input type="number" id="pPrice" placeholder="Premium" oninput="calcOptions()">
+                            <input type="number" id="pDelta" placeholder="Delta" oninput="calcOptions()">
+                            <input type="number" id="pMove" placeholder="Move" oninput="calcOptions()">
+                            <h1 id="pRes">₹0.00</h1>
+                        </div>
+                    </div>
+                    <button class="clear-btn" onclick="clearOptions()">Clear</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="dots-container">
+            <span class="dot active" onclick="currentSlide(0)"></span>
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
