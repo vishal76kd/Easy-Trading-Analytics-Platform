@@ -1,7 +1,8 @@
 // ==========================================
-// 1. CAROUSEL SLIDER ENGINE 
+// 1. CAROUSEL SLIDER ENGINE
 // ==========================================
 var slideIndex = 0;
+var totalSlides = 5;
 
 function updateSlide() {
     var track = document.getElementById('track');
@@ -21,8 +22,8 @@ function updateSlide() {
 
 function moveSlide(n) {
     slideIndex = slideIndex + n;
-    if (slideIndex < 0) { slideIndex = 3; }
-    if (slideIndex > 3) { slideIndex = 0; }
+    if (slideIndex < 0) { slideIndex = totalSlides - 1; }
+    if (slideIndex >= totalSlides) { slideIndex = 0; }
     updateSlide();
 }
 
@@ -217,7 +218,7 @@ function clearOptions() {
 
 
 // ==========================================
-// 5. QUICK CALCULATOR ENGINE (Refined Zero Logic)
+// 5. QUICK CALCULATOR ENGINE
 // ==========================================
 var currentExpression = "";
 
@@ -244,7 +245,6 @@ function pressKey(key) {
         }
     } 
     else {
-        // Agar display par '0' hai aur user number input kare, toh 0 override hoga
         if (display.value === "0" && !isNaN(key)) {
             currentExpression = key;
         } else {
@@ -252,4 +252,44 @@ function pressKey(key) {
         }
         display.value = currentExpression;
     }
+}
+
+
+// ==========================================
+// 6. TARGET PREMIUM & P&L CALCULATOR (New Module)
+// ==========================================
+function applyPresetType() {
+    var selectVal = document.getElementById('optionSelect').value;
+    if (selectVal !== "custom") {
+        document.getElementById('deltaVal').value = parseFloat(selectVal).toFixed(2);
+    }
+    calcTargetCalc();
+}
+
+function calcTargetCalc() {
+    var buyPrem = parseFloat(document.getElementById('buyPrem').value) || 0;
+    var movePts = parseFloat(document.getElementById('spotMove').value) || 0;
+    var delta = parseFloat(document.getElementById('deltaVal').value) || 0;
+    var qty = parseFloat(document.getElementById('lotQty').value) || 0;
+
+    var changePts = movePts * delta;
+    var newPrice = buyPrem > 0 ? (buyPrem + changePts) : changePts;
+    if (newPrice < 0) newPrice = 0;
+    
+    var totalPnL = changePts * qty;
+
+    document.getElementById('changePts').innerText = (changePts >= 0 ? "+" : "") + changePts.toFixed(2) + " pts";
+    document.getElementById('newTargetPrice').innerText = "₹" + newPrice.toFixed(2);
+    document.getElementById('finalPnL').innerText = "₹" + totalPnL.toFixed(2);
+}
+
+function clearTargetCalc() {
+    document.getElementById('buyPrem').value = "";
+    document.getElementById('spotMove').value = "";
+    document.getElementById('optionSelect').value = "0.70";
+    document.getElementById('deltaVal').value = "0.70";
+    document.getElementById('lotQty').value = "";
+    document.getElementById('changePts').innerText = "+0.00 pts";
+    document.getElementById('newTargetPrice').innerText = "₹0.00";
+    document.getElementById('finalPnL').innerText = "₹0.00";
 }
