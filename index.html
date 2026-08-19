@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EASY TRADING ANALYTICS PLATFORM</title>
     <link rel="stylesheet" href="style.css">
-
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
-
+    
     <h3 class="app-title">Easy Trading</h3>
     
     <div class="carousel-container">
@@ -18,6 +17,7 @@
 
         <div class="carousel-track" id="track">
             
+            <!-- Slide 1: Quick Calculator -->
             <div class="slide-item">
                 <div class="box calc-box">
                     <h3>🧮 QUICK CALCULATOR</h3>
@@ -49,6 +49,7 @@
                 </div>
             </div>
             
+            <!-- Slide 2: Brokerage & PnL -->
             <div class="slide-item">
                 <div class="box">
                     <h3>📊 BROKERAGE & PNL</h3>
@@ -84,6 +85,7 @@
                 </div>
             </div>
 
+            <!-- Slide 3: Risk Margin -->
             <div class="slide-item">
                 <div class="box">
                     <h3>🎯 PRO MARGIN CALC</h3>
@@ -118,6 +120,7 @@
                 </div>
             </div>
 
+            <!-- Slide 4: Live Option Delta -->
             <div class="slide-item">
                 <div class="box opt-box">
                     <h3>⚡ LIVE OPTION DELTA CALC</h3>
@@ -141,6 +144,34 @@
                 </div>
             </div>
 
+            <!-- Slide 5: Direct Target & P&L Calculator -->
+            <div class="slide-item">
+                <div class="box">
+                    <h3>🎯 TARGET PREMIUM CALC</h3>
+                    <input type="number" id="buyPrem" placeholder="Bought Premium (e.g. 224)" oninput="calcTargetCalc()">
+                    <input type="number" id="spotMove" placeholder="Market Move (+/- Points e.g. 20)" oninput="calcTargetCalc()">
+                    
+                    <select id="optionSelect" onchange="applyPresetType()">
+                        <option value="0.70">Deep ITM (Delta ~ 0.70)</option>
+                        <option value="0.60">Slight ITM (Delta ~ 0.60)</option>
+                        <option value="0.50">ATM Strike (Delta ~ 0.50)</option>
+                        <option value="0.30">OTM Strike (Delta ~ 0.30)</option>
+                        <option value="custom">Custom Delta</option>
+                    </select>
+
+                    <input type="number" id="deltaVal" step="0.05" min="0" max="1" value="0.70" placeholder="Delta Value" oninput="calcTargetCalc()">
+                    <input type="number" id="lotQty" placeholder="Quantity (e.g. 65)" oninput="calcTargetCalc()">
+                    
+                    <div class="res-box">
+                        <p>Change: <span id="changePts" class="green">+0.00 pts</span></p>
+                        <p>New Premium Price: <span id="newTargetPrice" class="orange">₹0.00</span></p>
+                        <hr style="border:0; border-top: 1px solid #334155; margin:6px 0;">
+                        <p>Estimated P&L: <span id="finalPnL" class="blue">₹0.00</span></p>
+                    </div>
+                    <button class="clear-btn" onclick="clearTargetCalc()">Clear</button>
+                </div>
+            </div>
+
         </div>
 
         <div class="dots-container">
@@ -148,21 +179,12 @@
             <span class="dot" onclick="currentSlide(1)"></span>
             <span class="dot" onclick="currentSlide(2)"></span>
             <span class="dot" onclick="currentSlide(3)"></span>
+            <span class="dot" onclick="currentSlide(4)"></span>
         </div>
 
     </div>
 
     <script src="script.js"></script>
-
-      <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('./service-worker.js')
-            .then(reg => console.log('Service Worker Registered!'))
-            .catch(err => console.log('Service Worker Failed:', err));
-        });
-      }
-    </script>
-    
 </body>
-</html>
+                            </html>
+    
